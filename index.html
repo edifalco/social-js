@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>JS exercise</title>
+  </head>
+  <body>
+        <h1>JS exercice</h1>
+
+        <div id="model"></div>
+
+    <script>
+      // Schema array defining the pattern or template for what data is valid for adding to the DB.
+      let schema = ["id", "name", "age"];
+
+      // Function model.
+      function model(action, data, schema) {
+        var db = [];
+        var temp = {};
+        var string = "[{";
+        var noSchema = [];
+        // Checking action
+        if (action === "add") {
+          Object.keys(data).forEach( function(key,i) {
+            if(schema.indexOf(key) !== -1 ) {
+              // Adding to the object temp the key and the value of the data.
+              temp[key] = data[key];
+              // Preparing string to print.
+              string += key + ": " + data[key] + ", ";
+            } else {
+              // Adding to the array noSchema the key of the data that are not in the schema.
+              noSchema.push(key);
+            }
+          });
+          // Inserting object into array
+          db.push(temp);
+          // Removing last space and comma.
+          var newStr = string.slice(0, -2);
+          newStr += "}] => ";
+
+          noSchema.forEach(function(element) {
+            newStr += element + " was not added because is not allowed by the schema."
+          });
+
+          console.log(newStr);
+
+          document.getElementById("model").innerHTML = newStr;
+        } else {
+          console.log("add is not present");
+        }
+      };
+
+      model("add", {id: 1, age: 32, address: "Muntaner 262, Barcelona"}, schema);
+
+      model("add", {id: 1, name: "Joe", age: 32, address: "Muntaner 262, Barcelona"}, schema)
+
+      model("", {id: 1, name: "Joe", age: 32, address: "Muntaner 262, Barcelona"}, schema)
+
+    </script>
+  </body>
+</html>
